@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.js": "/Challenge/static/js/main.4275cdbb.chunk.js",
+    "main.js.map": "/Challenge/static/js/main.4275cdbb.chunk.js.map",
+    "runtime-main.js": "/Challenge/static/js/runtime-main.54dfe16f.js",
+    "runtime-main.js.map": "/Challenge/static/js/runtime-main.54dfe16f.js.map",
+    "static/js/2.ee3a0a7f.chunk.js": "/Challenge/static/js/2.ee3a0a7f.chunk.js",
+    "static/js/2.ee3a0a7f.chunk.js.map": "/Challenge/static/js/2.ee3a0a7f.chunk.js.map",
+    "index.html": "/Challenge/index.html",
+    "precache-manifest.840cc3b668f9e85dda41f5acd74ee99b.js": "/Challenge/precache-manifest.840cc3b668f9e85dda41f5acd74ee99b.js",
+    "service-worker.js": "/Challenge/service-worker.js"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.54dfe16f.js",
+    "static/js/2.ee3a0a7f.chunk.js",
+    "static/js/main.4275cdbb.chunk.js"
+  ]
+}
