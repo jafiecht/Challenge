@@ -1,4 +1,6 @@
-import React from 'react';
+//Import External Libraries
+////////////////////////////////////////////////////////////////////////////////
+import React  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +12,10 @@ import {
 } from '@material-ui/pickers';
 import { ScatterChart, XAxis, YAxis, Scatter, Tooltip, ResponsiveContainer } from 'recharts';
 
+
+
+//A few Material-ui formatting details...
+////////////////////////////////////////////////////////////////////////////////
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -23,16 +29,44 @@ const useStyles = makeStyles(theme => ({
   },
 }));
   
+
+
+//Lets define some variables we'll use to track dates in various forms
+////////////////////////////////////////////////////////////////////////////////
 var selectedDates = [];
 var stringDates = [];
 var timelineData = [];
 
+
+
+//A quick custom component to modify the tooltip on the timeline
+////////////////////////////////////////////////////////////////////////////////
+class CustomTooltip extends React.Component {
+  
+  render() {
+    const { active } = this.props;
+
+    if (active) {
+      const { payload, label } = this.props;
+      return <p>{payload[0].payload.date}</p>;
+    }
+
+    return null;
+  }
+};
+
+
+
+//Our Main Component
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 function App() {
 
   const classes = useStyles();
 
   //Set default day in the date picker as today 
   const [displayDate, setSelectedDate] = React.useState(new Date());
+
 
   //Triggered every time a new date is picked
   const handleDateChange = date => {
@@ -43,33 +77,26 @@ function App() {
     //Add new date to list of dates
     selectedDates.push(date);
 
-    //If more than 10 selections, remove selections.
-    if (selectedDates.length < 11) {
-      //Create an array of YYYY-MM-DD strings for display
-      stringDates = selectedDates.map(dateObject => dateObject.toISOString().split('T')[0]);
-      timelineData = selectedDates.map(dateObject => {
-        var container = {};
-        container["date"] = dateObject.toISOString().split('T')[0];
-        container["timestamp"] = Date.parse(dateObject);
-        container["dummyXValue"] = 0;
-        return container;
-      });
-    } else {
+    //If more than 10 selections, remove initial selections.
+    if (selectedDates.length > 10) {
       selectedDates.shift()
-      stringDates = selectedDates.map(dateObject => dateObject.toISOString().split('T')[0]);
-      timelineData = selectedDates.map(dateObject => {
-        var container = {};
-        container["date"] = dateObject.toISOString().split('T')[0];
-        container["timestamp"] = Date.parse(dateObject);
-        container["dummyXValue"] = 0;
-        return container;
-      });
     }
-    
-    console.log(timelineData);
 
+    //Create an array of YYYY-MM-DD strings for display
+    stringDates = selectedDates.map(dateObject => dateObject.toISOString().split('T')[0]);
+    
+    //Create an array of data objects to feed to the chart
+    timelineData = selectedDates.map(dateObject => {
+      var container = {};
+      container["date"] = dateObject.toISOString().split('T')[0];
+      container["timestamp"] = Date.parse(dateObject);
+      container["dummyYValue"] = 0;
+      return container;
+    });
   };  
 
+
+  //Now the we define the components
   return (
     <Paper className={classes.root}>
       <Typography variant="h4">
@@ -103,12 +130,12 @@ function App() {
             tick={false}
           />
           <YAxis 
-            dataKey="dummyXValue" 
+            dataKey="dummyYValue" 
             type='number'
             hide={true}
           />
           <Scatter data={timelineData}/>
-          <Tooltip cursor={false} />
+          <Tooltip cursor={false} content={<CustomTooltip/>}/>
         </ScatterChart>
       </ResponsiveContainer>
     </Paper>      
@@ -116,5 +143,3 @@ function App() {
 }
 
 export default App;
-
-            //domain={['dataMin'-3600000*24, 'dataMax'+3600000*24]}
