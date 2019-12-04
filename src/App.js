@@ -5,11 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { ScatterChart, XAxis, YAxis, Scatter, Tooltip, ResponsiveContainer } from 'recharts';
 
 
@@ -47,7 +43,7 @@ class CustomTooltip extends React.Component {
     const { active } = this.props;
 
     if (active) {
-      const { payload, label } = this.props;
+      const { payload } = this.props;
       return <p>{payload[0].payload.date}</p>;
     }
 
@@ -73,10 +69,13 @@ function App() {
     
     //Selected date is passed in from date picker
     setSelectedDate(date);
-  
+    
+    //Reset date object time to fix timezone error
+    date.setHours(0)
+
     //Add new date to list of dates
     selectedDates.push(date);
-
+ 
     //If more than 10 selections, remove initial selections.
     if (selectedDates.length > 10) {
       selectedDates.shift()
